@@ -1,3 +1,4 @@
+/* style.css */
 :root {
     --primary: #00bfff;
     --bg: #181b20;
@@ -1032,7 +1033,7 @@ h2 {
 
 /* Project card */
 .project-card-modern {
-    flex: 1 1 240px;
+    flex: 0 1 260px;      /* fixed base width, no grow -> all cards same width, last one not stretched */
     max-width: 360px;
     background: linear-gradient(145deg, #151923 0%, #10131c 100%);
     border-radius: 18px;
