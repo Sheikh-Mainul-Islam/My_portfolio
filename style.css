@@ -1,14 +1,20 @@
 :root {
     --primary: #00bfff;
     --bg: #181b20;
-    --bg-alt: #23272f;
+    /* Made dark mode backgrounds slightly transparent for the glass effect */
+    --bg-alt: rgba(35, 39, 47, 0.65);
     --text: #e0e0e0;
     --text-alt: #b0e0ff;
-    --card: #23272f;
-    --border: #223344;
+    --card: rgba(35, 39, 47, 0.75);
+    --border: rgba(255, 255, 255, 0.08); /* Subtle light border for dark glass */
     --radius: 14px;
     --transition: 0.3s;
     --font: 'Poppins', Arial, sans-serif;
+    
+    --profile-blob: 30% 70% 70% 30% / 30% 30% 70% 70%; 
+    /* 🔥 Upgraded Dark Mode Profile Frame to Cyan-to-Purple Gradient 🔥 */
+    --profile-frame-border: linear-gradient(135deg, #00bfff 0%, #8a2be2 100%);
+    --profile-frame-shadow: 12px 12px 35px rgba(0,0,0,0.6);
 }
 
 html {
@@ -31,10 +37,35 @@ body {
     z-index: 10;
 }
 
+/* ==========================================================================
+   🌌 GLOBAL ANIMATED LIQUID BACKGROUND (Now works in Dark & Light Mode!)
+   ========================================================================== */
+body::before,
+body::after {
+    content: ''; position: fixed; width: 60vw; height: 60vw; border-radius: 50%; z-index: -1;
+    filter: blur(120px); opacity: 0.5; animation: floatBlobs 20s infinite alternate ease-in-out; pointer-events: none;
+}
+/* Dark Mode Colors */
+body::before { top: -10%; left: -10%; background: rgba(0, 191, 255, 0.25); } 
+body::after { bottom: -10%; right: -10%; background: rgba(138, 43, 226, 0.2); animation-delay: -10s; } 
+
+@keyframes floatBlobs {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(15%, -15%) scale(1.1); }
+    66% { transform: translate(-15%, 15%) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+/* GLOBAL GLASSMORPHISM BLUR - Applied to containers in both modes */
+nav, .about-inner, .automation-inner, .projects-inner, .skills-inner, .education-inner, .hobby-inner, .contact-inner, .automation-card, .impact-card, .project-card-modern, .skill-category-card, .contact-right, .about-stat-card, .glass-modal, #hobbyGalleryModal, .photo-viewer-img-wrap, .hobby-thumb {
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
 /* NAV */
 nav {
     background: var(--bg-alt);
-    box-shadow: 0 2px 8px #0002;
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -108,7 +139,7 @@ nav ul li a:hover::after {
 /* SECTIONS */
 .section {
     padding: 60px 0 40px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid transparent;
     transition: background 0.4s ease, border-color 0.4s ease;
 }
 .section-title {
@@ -167,7 +198,7 @@ h2 {
     max-width: 500px;
 }
 .hero-section {
-    background: linear-gradient(120deg, var(--bg) 70%, var(--bg-alt) 100%);
+    background: transparent; /* Lets blobs show */
     padding: 70px 0 50px 0;
     min-height: 70vh;
     display: flex;
@@ -187,19 +218,46 @@ h2 {
     flex: 1 1 220px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center; 
     margin-top: 30px;
 }
-.profile-img {
-    width: 320px;
-    height: 320px;
-    border-radius: 50%;
-    border: 4px solid var(--primary);
-    object-fit: cover;
-    box-shadow: 0 0 40px rgba(0, 191, 255, 0.2);
-    background: var(--bg-alt);
+
+/* Profile Frame */
+.profile-frame {
+    width: 330px; 
+    height: 330px;
+    border-radius: var(--profile-blob); 
+    background: var(--profile-frame-border);
+    padding: 6px; 
+    box-shadow: 
+        var(--profile-frame-shadow),
+        0 0 35px rgba(0, 191, 255, 0.4); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+    background-size: cover;
     max-width: 100%;
-    margin-top: 30px;
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
+}
+.profile-frame:hover {
+    transform: translateY(-5px) rotateX(5deg) rotateY(-5deg); 
+    box-shadow: 
+        15px 15px 45px rgba(0,0,0,0.7),
+        0 0 45px rgba(0, 191, 255, 0.5);
+}
+.profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit; 
+    object-fit: cover;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    max-width: 100%;
+    margin-top: 0;
+    display: block;
 }
 
 /* HERO BUTTONS */
@@ -257,7 +315,7 @@ h2 {
 }
 .btn-outline:hover {
     background: var(--primary);
-    color: var(--bg);
+    color: #ffffff; /* White text looks better in dark mode */
 }
 
 .btn.btn-resume .resume-icon { color: #ffffff; transition: color 0.2s; }
@@ -309,7 +367,6 @@ h2 {
 }
 
 /* ABOUT MODERN */
-.about-modern { background: radial-gradient(circle at top, var(--bg-alt) 0%, var(--bg) 60%); }
 .about-inner {
     position: relative; max-width: 1000px; margin: 0 auto; padding: 32px 28px 30px 28px;
     border-radius: 22px; border: 1.5px solid var(--border); background: var(--card);
@@ -321,7 +378,7 @@ h2 {
 
 .about-stats-grid { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 18px; }
 .about-stat-card {
-    background: var(--bg); border-radius: 14px; padding: 28px 32px 18px 32px;
+    background: var(--bg-alt); border-radius: 14px; padding: 28px 32px 18px 32px;
     min-width: 180px; flex: 1 1 180px; border: 1.5px solid var(--border);
     display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 10px; transition: all 0.3s ease;
 }
@@ -341,7 +398,6 @@ h2 {
 .about-learnmore-btn .plus-icon { font-size: 1.3em; font-weight: 700; margin-right: 4px; }
 
 /* AI AUTOMATION SECTION */
-.automation-section { background: radial-gradient(circle at top, var(--bg-alt) 0%, var(--bg) 60%); }
 .automation-inner {
     max-width: 900px; margin: 0 auto; padding: 32px 28px 30px 28px;
     border-radius: 22px; border: 1.5px solid var(--border); background: var(--card); transition: all 0.4s ease;
@@ -350,7 +406,7 @@ h2 {
 
 .automation-grid { display: flex; flex-wrap: wrap; gap: 22px; justify-content: center; margin-bottom: 24px; }
 .automation-card {
-    flex: 1 1 260px; max-width: 380px; background: var(--bg); border-radius: 18px; border: 1px solid var(--border);
+    flex: 1 1 260px; max-width: 380px; background: var(--bg-alt); border-radius: 18px; border: 1px solid var(--border);
     padding: 18px 18px 16px; transition: all 0.3s ease;
 }
 .automation-card:hover { 
@@ -370,7 +426,7 @@ h2 {
 }
 .impact-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 24px; }
 .impact-card {
-    flex: 1 1 220px; max-width: 280px; background: var(--bg); border: 1px solid var(--border);
+    flex: 1 1 220px; max-width: 280px; background: var(--bg-alt); border: 1px solid var(--border);
     border-radius: 14px; padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px; text-align: left; transition: all 0.3s;
 }
 .impact-card:hover { 
@@ -382,19 +438,18 @@ h2 {
 .impact-info p { margin: 0; color: var(--text-alt); font-size: 0.85rem; line-height: 1.5; }
 
 /* SKILLS SECTION */
-.skills-section { background: radial-gradient(circle at top, var(--bg-alt) 0%, var(--bg) 60%); }
 .skills-inner {
     max-width: 1000px; margin: 0 auto; padding: 32px 28px 30px 28px;
     border-radius: 22px; border: 1.5px solid var(--border); background: var(--card); transition: all 0.4s ease;
 }
 .skills-bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 20px; }
-.skill-category-card { background: var(--bg); border-radius: 18px; border: 1px solid var(--border); padding: 24px; transition: all 0.3s; }
+.skill-category-card { background: var(--bg-alt); border-radius: 18px; border: 1px solid var(--border); padding: 24px; transition: all 0.3s; }
 .skill-category-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 12px 32px rgba(0, 191, 255, 0.2); }
 .category-title { color: var(--text); font-size: 1.2rem; font-weight: 600; margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
 .category-title svg { color: var(--primary); }
 .skill-badges { display: flex; flex-wrap: wrap; gap: 12px; }
 .skill-badge {
-    display: inline-flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--border);
+    display: inline-flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border);
     padding: 10px 16px; border-radius: 12px; color: var(--text); font-size: 0.95rem; font-weight: 500; transition: all 0.3s;
 }
 .skill-badge img { width: 24px; height: 24px; object-fit: contain; transition: transform 0.3s; }
@@ -405,7 +460,6 @@ h2 {
 .skill-badge:hover img { transform: scale(1.15); }
 
 /* PROJECTS SECTION */
-.projects-section { background: radial-gradient(circle at top, var(--bg-alt) 0%, var(--bg) 60%); }
 .projects-inner {
     max-width: 1000px; margin: 0 auto; padding: 32px 28px 30px 28px;
     border-radius: 22px; border: 1.5px solid var(--border); background: var(--card); transition: all 0.4s ease;
@@ -413,7 +467,7 @@ h2 {
 .projects-subtitle { font-size: 1.02rem; color: var(--text-alt); max-width: 620px; margin: 0 auto 24px auto; text-align: center; }
 .projects-grid { display: flex; flex-wrap: wrap; gap: 22px; justify-content: center; }
 .project-card-modern {
-    flex: 0 1 260px; max-width: 360px; background: var(--bg); border-radius: 18px; border: 1.5px solid var(--border);
+    flex: 0 1 260px; max-width: 360px; background: var(--bg-alt); border-radius: 18px; border: 1.5px solid var(--border);
     padding: 18px 18px 16px; transition: all 0.3s ease; cursor: pointer;
 }
 .project-card-modern:hover { 
@@ -429,7 +483,6 @@ h2 {
 .project-link-modern:hover { color: var(--text); border-color: var(--text); }
 
 /* EDUCATION & HOBBY SECTIONS */
-.education-section, .hobby-section { background: radial-gradient(circle at top, var(--bg-alt) 0%, var(--bg) 60%); }
 .education-inner, .hobby-inner {
     max-width: 1000px; margin: 0 auto; padding: 32px 28px 30px 28px;
     border-radius: 22px; border: 1.5px solid var(--border); background: var(--card); transition: all 0.4s ease;
@@ -437,7 +490,7 @@ h2 {
 .education-stats-grid .about-stat-card { align-items: center; text-align: center; }
 
 /* CONTACT SECTION */
-.contact-section-space { margin-top: 80px; background: radial-gradient(circle at top, var(--bg-alt) 0%, var(--bg) 60%); }
+.contact-section-space { margin-top: 80px; }
 .contact-inner {
     max-width: 1000px; margin: 0 auto; padding: 32px 28px 30px 28px;
     border-radius: 22px; border: 1.5px solid var(--border); background: var(--card); transition: all 0.4s ease;
@@ -452,7 +505,7 @@ h2 {
 .contact-value a:hover { text-decoration: underline; }
 
 .contact-right {
-    flex: 1 1 340px; min-width: 280px; max-width: 480px; background: var(--bg); border-radius: 18px;
+    flex: 1 1 340px; min-width: 280px; max-width: 480px; background: var(--bg-alt); border-radius: 18px;
     padding: 32px 28px; border: 1px solid var(--border); transition: all 0.3s;
 }
 .contact-form-effect.form-glow {
@@ -462,7 +515,7 @@ h2 {
 .contact-form-modern { display: flex; flex-direction: column; gap: 18px; }
 .contact-form-modern label { color: var(--text); font-weight: 600; margin-bottom: 4px; }
 .contact-form-modern input, .contact-form-modern textarea {
-    background: var(--card); border: 1.5px solid var(--border); border-radius: 8px; padding: 12px;
+    background: rgba(0,0,0,0.2); border: 1.5px solid var(--border); border-radius: 8px; padding: 12px;
     color: var(--text); font-size: 1rem; width: 100%; resize: none; transition: all 0.3s;
 }
 .contact-form-modern input:focus, .contact-form-modern textarea:focus { border: 2px solid var(--primary); outline: none; }
@@ -523,14 +576,11 @@ footer { text-align: center; color: var(--text-alt); padding: 24px 0 12px 0; bac
 /* 🔥 SQUARE PHONE GALLERY HORIZONTAL SCROLL 🔥 */
 .hobby-gallery-thumbs {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; 
     overflow-x: auto; 
-    gap: 16px; /* Space between photos */
+    gap: 12px; 
     justify-content: flex-start;
-    
-    /* 🔥 FIX: Added padding inside the scroll box so the shadow doesn't get cut off! 🔥 */
     padding: 30px 20px; 
-    
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
 }
@@ -541,7 +591,7 @@ footer { text-align: center; color: var(--text-alt); padding: 24px 0 12px 0; bac
 /* 🔥 PERFECT SQUARE THUMBNAILS 🔥 */
 .hobby-thumb {
     flex: 0 0 auto; 
-    background: var(--card);
+    background: var(--bg-alt);
     border-radius: 12px;
     border: 1px solid transparent;
     box-shadow: 0 2px 12px rgba(0, 191, 255, 0.1);
@@ -554,8 +604,6 @@ footer { text-align: center; color: var(--text-alt); padding: 24px 0 12px 0; bac
     width: 110px; 
     height: 110px; 
 }
-
-/* BLUE HOVER GLOW FOR HOBBIES (DARK MODE) */
 .hobby-thumb:hover, .hobby-thumb:focus {
     background: linear-gradient(135deg, rgba(0, 191, 255, 0.2) 0%, var(--card) 100%);
     box-shadow: 0 0 24px rgba(0, 191, 255, 0.6), 0 2px 12px rgba(0, 191, 255, 0.2);
@@ -625,21 +673,6 @@ footer { text-align: center; color: var(--text-alt); padding: 24px 0 12px 0; bac
 /* ==========================================================================
    🌞 LIQUID GLASS LIGHT THEME (iOS 26 Style)
    ========================================================================== */
-body.light-theme::before,
-body.light-theme::after {
-    content: ''; position: fixed; width: 60vw; height: 60vw; border-radius: 50%; z-index: -1;
-    filter: blur(120px); opacity: 0.6; animation: floatBlobs 20s infinite alternate ease-in-out; pointer-events: none;
-}
-body.light-theme::before { top: -10%; left: -10%; background: #d1fae5; }
-body.light-theme::after { bottom: -10%; right: -10%; background: #bfdbfe; animation-delay: -10s; }
-
-@keyframes floatBlobs {
-    0% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(15%, -15%) scale(1.1); }
-    66% { transform: translate(-15%, 15%) scale(0.9); }
-    100% { transform: translate(0, 0) scale(1); }
-}
-
 body.light-theme {
     --primary: #10b981;       
     --bg: #f8fafc;            
@@ -648,8 +681,17 @@ body.light-theme {
     --card: rgba(255, 255, 255, 0.4); 
     --bg-alt: rgba(255, 255, 255, 0.25);
     --border: rgba(255, 255, 255, 0.5); 
+    
+    /* Overrides for Light Mode Profile */
+    --profile-frame-border: linear-gradient(135deg, #10b981, #0ea5e9);
+    --profile-frame-shadow: 12px 12px 35px rgba(0,0,0,0.2); 
 }
 
+/* Light Mode Blobs Overrides */
+body.light-theme::before { background: #d1fae5; opacity: 0.7;}
+body.light-theme::after { background: #bfdbfe; opacity: 0.7; }
+
+/* Apply Glass to Light Mode Elements */
 body.light-theme nav,
 body.light-theme footer,
 body.light-theme .about-inner,
@@ -673,8 +715,6 @@ body.light-theme #hobbyGalleryModal {
     border: 1px solid rgba(255, 255, 255, 0.6) !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.06) !important;
 }
-
-body.light-theme .section, body.light-theme .hero-section { background: transparent !important; }
 
 body.light-theme .skill-badge {
     background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(255, 255, 255, 0.7); color: var(--text); box-shadow: 0 4px 10px rgba(0,0,0,0.02);
@@ -714,6 +754,18 @@ body.light-theme .hobby-modal-btn:hover {
     background: rgba(0, 0, 0, 0.2) !important; border-color: rgba(0, 0, 0, 0.3) !important;
 }
 
+/* 3D Profile Glow Overrides for Light Mode */
+body.light-theme .profile-frame {
+    box-shadow: 
+        var(--profile-frame-shadow),
+        0 0 35px rgba(16, 185, 129, 0.35); /* Glow in Light Mode */
+}
+body.light-theme .profile-frame:hover {
+    box-shadow: 
+        15px 15px 45px rgba(0,0,0,0.3),
+        0 0 45px rgba(16, 185, 129, 0.45);
+}
+
 /* ✨ EMERALD GREEN HOVER EFFECTS FOR LIGHT MODE ✨ */
 body.light-theme .automation-card:hover, body.light-theme .impact-card:hover, body.light-theme .project-card-modern:hover, body.light-theme .skill-category-card:hover, body.light-theme .about-stat-card:hover {
     border-color: var(--primary) !important; box-shadow: 0 12px 35px rgba(16, 185, 129, 0.35) !important; background: rgba(255, 255, 255, 0.8) !important; 
@@ -721,7 +773,6 @@ body.light-theme .automation-card:hover, body.light-theme .impact-card:hover, bo
 body.light-theme .skill-badge:hover { background: rgba(16, 185, 129, 0.1) !important; border-color: var(--primary) !important; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3) !important; }
 body.light-theme .contact-form-effect.form-glow { border-color: var(--primary) !important; box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4) !important; background: rgba(255, 255, 255, 0.9) !important; }
 
-/* HOVER GLOW FOR LIGHT MODE GALLERY THUMBNAILS */
 body.light-theme .hobby-thumb:hover, body.light-theme .hobby-thumb:focus {
     border-color: var(--primary) !important;
     box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4) !important;
@@ -740,7 +791,6 @@ body.light-theme .hobby-thumb:hover, body.light-theme .hobby-thumb:focus {
     .photo-viewer-modal { width: 90vw !important; height: 80vh !important; }
     .hobby-modal-btn { width: 40px; height: 40px; font-size: 1.3rem; }
     
-    /* Pull buttons INSIDE the glass box on mobile so they fit on screen */
     .photo-viewer-prev { left: 10px; }
     .photo-viewer-next { right: 10px; }
     .photo-viewer-close { top: 10px; right: 10px; }
@@ -749,4 +799,5 @@ body.light-theme .hobby-thumb:hover, body.light-theme .hobby-thumb:focus {
     .hero-section { padding: 40px 0 20px 0; }
     nav ul { gap: 12px; font-size: 0.95rem; flex-wrap: wrap; }
     .automation-inner, .projects-inner, .about-inner, .skills-inner, .education-inner, .hobby-inner, .contact-inner { padding: 22px 16px 20px 16px; }
+    .profile-frame { width: 280px; height: 280px; } 
 }
