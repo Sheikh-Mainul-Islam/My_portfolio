@@ -13,11 +13,10 @@ function getSessionId() {
 const SESSION_ID = getSessionId();
 
 /* ===========================
-CONFIG - CONNECTED TO LIVE RENDER SERVER
+CONFIG
 =========================== */
-// We swapped localhost for your live Render domain. 
-// %20 represents the spaces in "Mainul's Ai Assistant"
-const webhookUrl = "https://my-ai-automation-hub.onrender.com/webhook/website-ai-assistant";
+const webhookUrl = "https://my-ai-automation-hub.onrender.com/webhook/Mainul's%20Ai%20Assistant";
+
 const chatContainer = document.getElementById("chat-widget-container");
 const chatBtn = document.getElementById("modern-chat-btn"); 
 const chatWindow = document.getElementById("chat");
@@ -36,19 +35,6 @@ function toggleChat() {
         chatContainer.style.display = "none";
         chatBtn.style.display = "flex";  // Shows the icon
     }
-}
-
-/* ===========================
-THEME TOGGLE
-=========================== */
-function toggleTheme() {
-  if (chatWindow.classList.contains("dark")) {
-    chatWindow.classList.remove("dark");
-    chatWindow.classList.add("light");
-  } else {
-    chatWindow.classList.remove("light");
-    chatWindow.classList.add("dark");
-  }
 }
 
 /* ===========================
