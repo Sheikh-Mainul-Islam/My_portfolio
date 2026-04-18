@@ -1,4 +1,51 @@
 document.addEventListener("DOMContentLoaded", function () {
+    
+    /* ====== GLOBAL THEME TOGGLE (DARK/LIGHT MODE - SYNCS WITH CHATBOT) ====== */
+    const themeToggleBtn = document.getElementById('global-theme-toggle');
+    const sunIcon = document.querySelector('.sun-icon');
+    const moonIcon = document.querySelector('.moon-icon');
+    const chatWindow = document.getElementById('chat');
+
+    if (localStorage.getItem('portfolioTheme') === 'light') {
+        document.body.classList.add('light-theme');
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+        if(chatWindow) {
+            chatWindow.classList.remove('dark');
+            chatWindow.classList.add('light');
+        }
+    } else {
+        document.body.classList.remove('light-theme');
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+        if(chatWindow) {
+            chatWindow.classList.remove('light');
+            chatWindow.classList.add('dark');
+        }
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        
+        if (document.body.classList.contains('light-theme')) {
+            localStorage.setItem('portfolioTheme', 'light');
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+            if(chatWindow) {
+                chatWindow.classList.remove('dark');
+                chatWindow.classList.add('light');
+            }
+        } else {
+            localStorage.setItem('portfolioTheme', 'dark');
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+            if(chatWindow) {
+                chatWindow.classList.remove('light');
+                chatWindow.classList.add('dark');
+            }
+        }
+    });
+
     /* ====== Nav active state on click ====== */
     const navLinks = document.querySelectorAll('nav ul li a');
     navLinks.forEach(link => {
@@ -8,13 +55,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    /* ====== Scroll spy: highlight nav based on scroll position ====== */
+    /* ====== Scroll spy ====== */
     const sections = document.querySelectorAll('section[id]');
-
     function onScroll() {
         const scrollPos = window.scrollY + 130; 
         let currentId = '';
-
         sections.forEach(sec => {
             const top = sec.offsetTop;
             const height = sec.offsetHeight;
@@ -22,7 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentId = sec.id;
             }
         });
-
         if (currentId) {
             navLinks.forEach(link => {
                 const href = link.getAttribute('href');
@@ -34,11 +78,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
-
     window.addEventListener('scroll', onScroll);
     onScroll();
 
-    /* ====== Make entire project card clickable to GitHub ====== */
+    /* ====== Make entire project card clickable ====== */
     const projectCards = document.querySelectorAll('.project-card-modern');
     projectCards.forEach(card => {
         const link = card.querySelector('.project-link-modern');
@@ -49,17 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
             window.open(link.href, '_blank');
         });
     });
-
-    /* ====== Contact card glow ====== */
-    const formCard = document.querySelector('.contact-form-effect');
-    if (formCard) {
-        formCard.addEventListener('mouseenter', function () {
-            formCard.classList.add('form-glow');
-        });
-        formCard.addEventListener('mouseleave', function () {
-            formCard.classList.remove('form-glow');
-        });
-    }
 
     /* ====== Glass Modal (About Learn More) ====== */
     const learnMoreBtn = document.getElementById('aboutLearnMoreBtn');
@@ -77,7 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 10);
         document.body.style.overflow = 'hidden';
     }
-
     function closeModal() {
         glassModalBg.classList.remove('active');
         glassModal.classList.remove('active');
@@ -93,8 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         glassModalClose.addEventListener('click', closeModal);
         glassModalBg.addEventListener('click', closeModal);
         document.addEventListener('keydown', function (e) {
-            if (glassModal.style.display === 'block' &&
-                (e.key === "Escape" || e.key === "Esc")) {
+            if (glassModal.style.display === 'block' && (e.key === "Escape" || e.key === "Esc")) {
                 closeModal();
             }
         });
@@ -136,21 +166,23 @@ document.addEventListener("DOMContentLoaded", function () {
     function openHobbyGallery(type) {
         hobbyGalleryModalBg.style.display = 'block';
         hobbyGalleryModal.style.display = 'flex';
-        hobbyGalleryModal.classList.add('active');
-        hobbyGalleryModalBg.classList.add('active');
+        setTimeout(() => {
+            hobbyGalleryModal.classList.add('active');
+            hobbyGalleryModalBg.classList.add('active');
+        }, 10);
+        
+        // Lock background scrolling
         document.body.style.overflow = 'hidden';
 
         if (type === 'photography') {
             hobbyGalleryModalTitle.textContent = 'My Photography';
             hobbyGalleryModalContent.innerHTML = `
                 <div class="hobby-gallery-thumbs">
-                    ${
-                        photoList.map((p, i) => `
-                            <div class="hobby-thumb" tabindex="0" data-index="${i}">
-                                <img src="${p.src}" alt="${p.alt}">
-                            </div>
-                        `).join('')
-                    }
+                    ${photoList.map((p, i) => `
+                        <div class="hobby-thumb" tabindex="0" data-index="${i}">
+                            <img src="${p.src}" alt="${p.alt}">
+                        </div>
+                    `).join('')}
                 </div>
             `;
             currentGallery = photoList;
@@ -158,13 +190,11 @@ document.addEventListener("DOMContentLoaded", function () {
             hobbyGalleryModalTitle.textContent = 'My Favorite Web Series';
             hobbyGalleryModalContent.innerHTML = `
                 <div class="hobby-gallery-thumbs">
-                    ${
-                        seriesList.map((p, i) => `
-                            <div class="hobby-thumb" tabindex="0" data-index="${i}">
-                                <img src="${p.src}" alt="${p.alt}">
-                            </div>
-                        `).join('')
-                    }
+                    ${seriesList.map((p, i) => `
+                        <div class="hobby-thumb" tabindex="0" data-index="${i}">
+                            <img src="${p.src}" alt="${p.alt}">
+                        </div>
+                    `).join('')}
                 </div>
             `;
             currentGallery = seriesList;
@@ -174,11 +204,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.hobby-thumb').forEach(function (thumb) {
                 thumb.addEventListener('click', function () {
                     openPhotoViewer(parseInt(thumb.getAttribute('data-index'), 10));
-                });
-                thumb.addEventListener('keypress', function (e) {
-                    if (e.key === "Enter" || e.key === " ") {
-                        openPhotoViewer(parseInt(thumb.getAttribute('data-index'), 10));
-                    }
                 });
             });
         }, 50);
@@ -191,6 +216,8 @@ document.addEventListener("DOMContentLoaded", function () {
             hobbyGalleryModalBg.style.display = 'none';
             hobbyGalleryModal.style.display = 'none';
         }, 300);
+        
+        // Unlock background scrolling ONLY when exiting the entire gallery
         document.body.style.overflow = '';
     }
 
@@ -216,7 +243,6 @@ document.addEventListener("DOMContentLoaded", function () {
             photoViewerModal.classList.add('active');
             photoViewerModal.focus();
         }, 10);
-        document.body.style.overflow = 'hidden';
     }
 
     function closePhotoViewer() {
@@ -233,7 +259,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 hobbyGalleryModalBg.classList.add('active');
             }, 10);
         }, 300);
-        document.body.style.overflow = '';
+        
+        // BUG FIXED: Do NOT reset document overflow here! 
+        // The gallery modal is still open behind it.
     }
 
     function prevPhoto() {
@@ -248,37 +276,19 @@ document.addEventListener("DOMContentLoaded", function () {
         showPhoto();
     }
 
-    const photographyCardEl = photographyCard;
-    const webseriesCardEl = webseriesCard;
-
-    if (photographyCardEl) {
-        photographyCardEl.addEventListener('click', () => openHobbyGallery('photography'));
-        photographyCardEl.addEventListener('keypress', e => {
-            if (e.key === 'Enter' || e.key === ' ') openHobbyGallery('photography');
-        });
+    if (photographyCard) {
+        photographyCard.addEventListener('click', () => openHobbyGallery('photography'));
     }
-    if (webseriesCardEl) {
-        webseriesCardEl.addEventListener('click', () => openHobbyGallery('webseries'));
-        webseriesCardEl.addEventListener('keypress', e => {
-            if (e.key === 'Enter' || e.key === ' ') openHobbyGallery('webseries');
-        });
+    if (webseriesCard) {
+        webseriesCard.addEventListener('click', () => openHobbyGallery('webseries'));
     }
 
     if (hobbyGalleryModalClose && hobbyGalleryModalBg) {
         hobbyGalleryModalClose.addEventListener('click', closeHobbyGallery);
         hobbyGalleryModalBg.addEventListener('click', closeHobbyGallery);
-
-        document.addEventListener('keydown', function (e) {
-            if (hobbyGalleryModal &&
-                hobbyGalleryModal.style.display === 'flex' &&
-                (e.key === "Escape" || e.key === "Esc")) {
-                closeHobbyGallery();
-            }
-        });
     }
 
-    if (photoViewerModal && photoViewerModalBg &&
-        photoViewerClose && photoViewerPrev && photoViewerNext) {
+    if (photoViewerModal && photoViewerModalBg && photoViewerClose && photoViewerPrev && photoViewerNext) {
         photoViewerClose.addEventListener('click', closePhotoViewer);
         photoViewerModalBg.addEventListener('click', closePhotoViewer);
         photoViewerPrev.addEventListener('click', prevPhoto);

@@ -22,6 +22,12 @@
                 <li><a href="#education">Education</a></li>
                 <li><a href="#hobby">My Hobby</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li>
+                    <button id="global-theme-toggle" class="global-theme-btn" aria-label="Toggle Theme">
+                        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </button>
+                </li>
             </ul>
         </div>
     </nav>
@@ -84,7 +90,7 @@
                     <span class="linkedin-icon">in</span>
                 </a>
 
-                <a href="#contact" class="btn-icon social-mail" title="Email">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sheiikhmainul@gmail.com" class="btn-icon social-mail" title="Email" target="_blank" rel="noopener noreferrer">
                     <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
                         <rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/>
                         <path d="M4 6l8 7 8-7" stroke="currentColor" stroke-width="2"/>
@@ -300,7 +306,7 @@
                             <div class="skill-badge"><img src="https://img.icons8.com/color/48/c-programming.png" alt="C"><span>C</span></div>
                             <div class="skill-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML"><span>HTML</span></div>
                             <div class="skill-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS"><span>CSS</span></div>
-                            <div class="skill-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" style="filter: invert(1);" alt="Django"><span>Django</span></div>
+                            <div class="skill-badge django-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" style="filter: invert(1);" alt="Django"><span>Django</span></div>
                         </div>
                     </div>
 
@@ -311,13 +317,13 @@
                         </h3>
                         <div class="skill-badges">
                             <div class="skill-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git"><span>Git</span></div>
-                            <div class="skill-badge"><img src="https://cdn.simpleicons.org/github/white" alt="GitHub"><span>GitHub</span></div>
+                            <div class="skill-badge github-badge"><img src="https://cdn.simpleicons.org/github/white" alt="GitHub"><span>GitHub</span></div>
                             <div class="skill-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker"><span>Docker</span></div>
                             <div class="skill-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL"><span>MySQL</span></div>
                             <div class="skill-badge"><img src="https://img.icons8.com/color/48/database.png" alt="SQL"><span>SQL</span></div>
                             <div class="skill-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code"><span>VS Code</span></div>
                             <div class="skill-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pycharm/pycharm-original.svg" alt="PyCharm"><span>PyCharm</span></div>
-                            <div class="skill-badge"><img src="https://upload.wikimedia.org/wikipedia/commons/9/92/LaTeX_logo.svg" style="filter: invert(1);" alt="LaTeX"><span>LaTeX</span></div>
+                            <div class="skill-badge latex-badge"><img src="https://upload.wikimedia.org/wikipedia/commons/9/92/LaTeX_logo.svg" style="filter: invert(1);" alt="LaTeX"><span>LaTeX</span></div>
                         </div>
                     </div>
 
@@ -576,7 +582,7 @@
 
                         <div class="contact-list">
                             <div class="contact-item">
-                                <a href="#contact" class="contact-icon contact-social" title="Email">
+                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sheiikhmainul@gmail.com" class="contact-icon contact-social" title="Email" target="_blank" rel="noopener noreferrer">
                                     <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
                                         <rect x="3" y="5.5" width="18" height="15" rx="2.5" stroke="currentColor" stroke-width="2"/>
                                         <path d="M4 7l8 7 8-7" stroke="currentColor" stroke-width="2"/>
@@ -585,7 +591,7 @@
                                 <div>
                                     <div class="contact-label">Email</div>
                                     <div class="contact-value">
-                                        <a href="#contact">sheiikhmainul@gmail.com</a>
+                                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sheiikhmainul@gmail.com" target="_blank" rel="noopener noreferrer">sheiikhmainul@gmail.com</a>
                                     </div>
                                 </div>
                             </div>
@@ -672,11 +678,11 @@
 
     <link rel="stylesheet" href="chatbot/chat-style.css">
 
-    <button id="modern-chat-btn" onclick="toggleChat()" aria-label="Open Chat">
+    <div id="modern-chat-btn" onclick="toggleChat()" aria-label="Open Chat">
         <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 3c-4.97 0-9 3.58-9 8 0 2.52 1.34 4.77 3.43 6.18L5 21l3.86-1.74A9.973 9.973 0 0 0 12 19c4.97 0 9-3.58 9-8s-4.03-8-9-8z"/>
         </svg>
-    </button>
+    </div>
 
     <div id="chat-widget-container">
         <div id="chat" class="dark">
@@ -686,10 +692,6 @@
                     Mainul's AI Assistant
                 </div>
                 <div class="header-controls">
-                    <div class="theme-toggle" onclick="toggleTheme()">
-                        <div class="icon-sun"></div>
-                        <div class="icon-moon"></div>
-                    </div>
                     <div class="close-chat" onclick="toggleChat()">&times;</div>
                 </div>
             </div>
