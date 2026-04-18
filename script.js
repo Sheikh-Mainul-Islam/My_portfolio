@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     
-    /* ====== GLOBAL THEME TOGGLE (DARK/LIGHT MODE - SYNCS WITH CHATBOT) ====== */
+    /* ====== GLOBAL THEME TOGGLE (DARK/LIGHT MODE) ====== */
     const themeToggleBtn = document.getElementById('global-theme-toggle');
     const sunIcon = document.querySelector('.sun-icon');
     const moonIcon = document.querySelector('.moon-icon');
@@ -171,7 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
             hobbyGalleryModalBg.classList.add('active');
         }, 10);
         
-        // Lock background scrolling
         document.body.style.overflow = 'hidden';
 
         if (type === 'photography') {
@@ -217,7 +216,6 @@ document.addEventListener("DOMContentLoaded", function () {
             hobbyGalleryModal.style.display = 'none';
         }, 300);
         
-        // Unlock background scrolling ONLY when exiting the entire gallery
         document.body.style.overflow = '';
     }
 
@@ -245,23 +243,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 10);
     }
 
+    /* 🔥 THE FIX: Gallery Cross-fade instantly removes the blink 🔥 */
     function closePhotoViewer() {
+        // 1. Immediately turn on the gallery display underneath
+        hobbyGalleryModal.style.display = 'flex';
+        hobbyGalleryModalBg.style.display = 'block';
+        
+        setTimeout(() => {
+            hobbyGalleryModal.classList.add('active');
+            hobbyGalleryModalBg.classList.add('active');
+        }, 10);
+
+        // 2. Start fading out the photo viewer
         photoViewerModalBg.classList.remove('active');
         photoViewerModal.classList.remove('active');
+        
+        // 3. Fully hide the photo viewer after the fade is done
         setTimeout(() => {
             photoViewerModalBg.style.display = 'none';
             photoViewerModal.style.display = 'none';
-
-            hobbyGalleryModal.style.display = 'flex';
-            hobbyGalleryModalBg.style.display = 'block';
-            setTimeout(() => {
-                hobbyGalleryModal.classList.add('active');
-                hobbyGalleryModalBg.classList.add('active');
-            }, 10);
         }, 300);
-        
-        // BUG FIXED: Do NOT reset document overflow here! 
-        // The gallery modal is still open behind it.
     }
 
     function prevPhoto() {
